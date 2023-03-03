@@ -233,7 +233,7 @@
     - name: Fail if unrecognized removed kernel drivers found
       vars:
         key_id: f08a07da902958defa4f5c2699fae9ec2eb67c5b
-        found_drivers_removed: "{{ leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n') | split('\n') | select('search', '- ') | replace('     - ', '') }}"
+        found_drivers_removed: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('     - ', '') }}"
       fail:
         msg: "Unrecognized removed kernel driver must be investigated: {{ item }}"
       loop: "{{ found_drivers_removed | sort | unique }}"
@@ -244,7 +244,7 @@
     - name: Fail if unrecognized unmaintained kernel drivers found
       vars:
         key_id: 0ff2413fd3cb0358736bf9be597f4dbdf58f2c4d
-        found_drivers_unmaintained: "{{ leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n') | split('\n') | select('search', '- ') | replace('     - ', '') }}"
+        found_drivers_unmaintained: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('     - ', '') }}"
       fail:
         msg: "Unrecognized unmaintained kernel driver must be investigated: {{ item }}"
       loop: "{{ found_drivers_unmaintained | sort | unique }}"
@@ -255,7 +255,7 @@
     - name: Fail if unrecognized packages found
       vars:
         key_id: 13f0791ae5f19f50e7d0d606fb6501f91b1efb2c
-        other_packages: "{{ leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n') | split('\n') | select('search', '- ') | replace('- ', '') }}"
+        other_packages: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('- ', '') }}"
       fail:
         msg: "Unrecognized package must be investigated: {{ item }}"
       loop: "{{ other_packages | sort | unique }}"
