@@ -1,0 +1,268 @@
+---
+- name: Run RHEL IPU Preupgrade Check
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    #
+    # RHEL versions
+    #
+    leapp_os_source: '7.9'
+    leapp_os_target: '8.6'
+    leapp_final_ver: '8'
+
+    #
+    # Satellite subscription
+    #
+    satellite_organization:
+    satellite_activation_key_ipu:
+    satellite_activation_key_real:
+
+    #
+    # Leapp tool update
+    #
+    leapp_update_check: false
+
+    #
+    # Leapp answerfile
+    #
+    leapp_answer_file: leapp.answerfile
+
+    #
+    # Leapp metadata file
+    #
+    leapp_metadata_file: leapp-data-21.tar.gz
+
+    #
+    # Leapp upload report
+    #
+    # XXX FIXME TODO - Not implemented yet
+    leapp_report_upload: false
+
+    #
+    # Known Leapp key IDs
+    #
+    leapp_keys_known:
+      # GRUB update
+      - baa75fad370c42fd037481909201cde9495dacf4
+      # Kernel drivers - removed
+      - f08a07da902958defa4f5c2699fae9ec2eb67c5b
+      # Kernel drivers - unmaintained
+      - 0ff2413fd3cb0358736bf9be597f4dbdf58f2c4d
+      # SELinux mode
+      - 39d7183dafba798aa4bbb1e70b0ef2bbe5b1772f
+      # SELinux relabeling
+      - 8fb81863f8413bd617c2a55b69b8e10ff03d7c72
+
+      # authselect update
+      - 40c4ab1da4a30dc1ca40e543f6385e1336d8810c
+      # PAM pam_pkcs11 module
+      - bf47e7305d6805e8bbeaa7593cf01e38030c23f3
+
+      # subscription-manager release
+      - 747a4ca25303eda17d1891bb85eeb226be14f252
+
+      # Incompatible grep
+      - 94665a499e2eeee35eca3e7093a7abe183384b16
+      # Python versions
+      - 0c98585b1d8d252eb540bf61560094f3495351f5
+
+      # chrony configuration
+      - 9acbfcce3d310a70b602c7ab0a9c2cb94eb6b63f
+      # OpenSSH Protocol
+      - 5744a935aab15fe2386ea52849d21edd6525e4d7
+      # Postfix changes
+      - 5721e0a07a67d82cf7e5ea6f17662cd4f82e0a33
+
+      # Other packages
+      - 13f0791ae5f19f50e7d0d606fb6501f91b1efb2c
+
+    #
+    # Known removed kernel drivers
+    #
+    kernel_drivers_known_removed:
+      - floppy
+      - pata_acpi
+
+    #
+    # Known unmaintained kernel drivers
+    #
+    kernel_drivers_known_unmaintained:
+      - mptbase
+      - mptscsih
+      - mptspi
+
+    #
+    # Known 3rd party packages
+    #
+    other_packages_known:
+      - BESAgent
+      - CentrifyDA
+      - CentrifyDC
+      - CentrifyDC-curl
+      - CentrifyDC-openldap
+      - CentrifyDC-openssl
+      - chef
+      - gpg-pubkey
+      - omi
+      - scx
+      - TaniumClient
+
+  tasks:
+    - name: Fail if running unsupported RHEL version
+      fail:
+        msg: "Unsupported RHEL source version {{ ansible_facts.distribution_version }} in use."
+      when: ansible_facts.distribution_version != leapp_os_source
+
+    - name: Check set RHEL release version
+      command: subscription-manager release
+      register: release_info
+      failed_when: "'Release not set' not in release_info.stdout"
+      changed_when: false
+
+    - name: Check enabled repositories
+      command: subscription-manager repos --list-enabled
+      register: enabled_repos
+      changed_when: false
+
+    - name: Enable RHEL 7 Server Extras repository
+      command: subscription-manager repos --enable rhel-7-server-extras-rpms
+      when: "'rhel-7-server-extras-rpms' not in enabled_repos.stdout"
+
+    - name: Gather package facts
+      package_facts:
+
+    - name: Install latest Leapp package
+      yum:
+        name:
+          - leapp
+          - leapp-upgrade
+        state: latest
+      when: >
+        'leapp' not in ansible_facts.packages or
+        leapp_update_check | bool
+
+    # XXX FIXME TODO - add restoring versionlock "always:" below if needed
+    - name: Clear yum version lock
+      command: yum versionlock clear
+      when: "'yum-plugin-versionlock' in ansible_facts.packages"
+
+    - name: Extract Leapp metadata archive
+      unarchive:
+        src: "{{ leapp_metadata_file }}"
+        dest: /etc/leapp/files
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Copy Leapp answerfile
+      copy:
+        src: "{{ leapp_answer_file }}"
+        dest: /var/log/leapp/answerfile.userchoices
+        mode: '0644'
+
+    - name: Remove Leapp state files
+      file:
+        path: "{{ item }}"
+      loop:
+        - /var/lib/leapp/el8userspace
+        - /var/lib/leapp/leapp.db
+        - /var/lib/leapp/scratch
+
+    - name: Run Leapp preupgrade check
+      block:
+        - name: Subscribe to RHEL IPU content view
+          command: >
+            subscription-manager register
+            --force
+            --organization={{ satellite_organization }}
+            --activation-key={{ satellite_activation_key_ipu }}
+          when:
+            - satellite_organization | default(false)
+            - satellite_activation_key_ipu | default(false)
+
+        - name: Run leapp preupgrade
+          command: leapp preupgrade --target {{ leapp_os_target }}
+          register: leapp_command
+          failed_when: "'report has been generated' not in leapp_command.stdout"
+
+      always:
+        - name: Subscribe to RHEL real content view
+          command: >
+            subscription-manager register
+            --force
+            --organization={{ satellite_organization }}
+            --activation-key={{ satellite_activation_key_real }}
+          when:
+            - satellite_organization | default(false)
+            - satellite_activation_key_real | default(false)
+
+        - name: Remove Leapp state files
+          file:
+            path: "{{ item }}"
+          loop:
+            - /var/lib/leapp/el8userspace
+            - /var/lib/leapp/leapp.db
+            - /var/lib/leapp/scratch
+
+    - name: Read Leapp report file
+      slurp:
+        src: /var/log/leapp/leapp-report.json
+      register: json_file
+
+    - name: Set Leapp report variable
+      set_fact:
+        leapp_report: "{{ json_file.content | b64decode | from_json }}"
+
+    - name: Fail if empty Leapp report
+      fail:
+        msg: "Empty Leapp report found."
+      when: not leapp_report.entries
+
+    # XXX FIXME TODO - Not implemented yet
+    - name: Upload Leapp report
+      command: echo TODO
+      when: leapp_report_upload | bool
+
+    - name: Fail if unrecognized risks in report
+      fail:
+        msg: "Unrecognized risk must be investigated: {{ item }}"
+      loop: "{{ leapp_report.entries | map(attribute='key') | sort | unique }}"
+      when: item not in leapp_keys_known
+
+    - name: Fail if unrecognized removed kernel drivers found
+      vars:
+        key_id: f08a07da902958defa4f5c2699fae9ec2eb67c5b
+        found_drivers_removed: "{{ leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n') | split('\n') | select('search', '- ') | replace('     - ', '') }}"
+      fail:
+        msg: "Unrecognized removed kernel driver must be investigated: {{ item }}"
+      loop: "{{ found_drivers_removed | sort | unique }}"
+      when:
+        - found_drivers_removed is defined
+        - item not in kernel_drivers_known_removed
+
+    - name: Fail if unrecognized unmaintained kernel drivers found
+      vars:
+        key_id: 0ff2413fd3cb0358736bf9be597f4dbdf58f2c4d
+        found_drivers_unmaintained: "{{ leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n') | split('\n') | select('search', '- ') | replace('     - ', '') }}"
+      fail:
+        msg: "Unrecognized unmaintained kernel driver must be investigated: {{ item }}"
+      loop: "{{ found_drivers_unmaintained | sort | unique }}"
+      when:
+        - found_drivers_unmaintained is defined
+        - item not in kernel_drivers_known_unmaintained
+
+    - name: Fail if unrecognized packages found
+      vars:
+        key_id: 13f0791ae5f19f50e7d0d606fb6501f91b1efb2c
+        other_packages: "{{ leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n') | split('\n') | select('search', '- ') | replace('- ', '') }}"
+      fail:
+        msg: "Unrecognized package must be investigated: {{ item }}"
+      loop: "{{ other_packages | sort | unique }}"
+      when:
+        - other_packages is defined
+        - item not in other_packages_known
+
+    - name: Display conclusion message
+      debug:
+        msg: "No unrecognized risks found, in-place upgrade looks safe."
