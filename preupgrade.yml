@@ -164,6 +164,7 @@
     - name: Remove Leapp state files
       file:
         path: "{{ item }}"
+        state: absent
       loop:
         - /var/lib/leapp/el8userspace
         - /var/lib/leapp/leapp.db
@@ -200,6 +201,7 @@
         - name: Remove Leapp state files
           file:
             path: "{{ item }}"
+            state: absent
           loop:
             - /var/lib/leapp/el8userspace
             - /var/lib/leapp/leapp.db
