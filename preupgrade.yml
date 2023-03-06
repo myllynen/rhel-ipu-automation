@@ -169,6 +169,7 @@
         - /var/lib/leapp/el8userspace
         - /var/lib/leapp/leapp.db
         - /var/lib/leapp/scratch
+        - /var/log/leapp/answerfile
 
     - name: Run Leapp preupgrade check
       block:
