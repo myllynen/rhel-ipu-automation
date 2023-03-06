@@ -129,20 +129,19 @@
       command: subscription-manager repos --enable rhel-7-server-extras-rpms
       when: "'rhel-7-server-extras-rpms' not in enabled_repos.stdout"
 
-    - name: Gather package facts
-      package_facts:
-
     - name: Install latest Leapp package
+      vars:
+        leapp_package_state: "{{ 'latest' if leapp_update_check | bool else 'present' }}"
       yum:
         name:
           - leapp
           - leapp-upgrade
-        state: latest
-      when: >
-        'leapp' not in ansible_facts.packages or
-        leapp_update_check | bool
+        state: "{{ leapp_package_state }}"
 
-    # XXX FIXME TODO - add restoring versionlock "always:" below if needed
+    - name: Gather package facts
+      package_facts:
+
+    # XXX FIXME TODO - add restoring versionlock in "always:" below if needed
     - name: Clear yum version lock
       command: yum versionlock clear
       when: "'yum-plugin-versionlock' in ansible_facts.packages"
