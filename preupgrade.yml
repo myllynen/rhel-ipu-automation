@@ -114,7 +114,7 @@
         msg: "Unsupported RHEL source version {{ ansible_facts.distribution_version }} in use."
       when: ansible_facts.distribution_version != leapp_os_source
 
-    - name: Check set RHEL release version
+    - name: Fail if RHEL release version set
       command: subscription-manager release
       register: release_info
       failed_when: "'Release not set' not in release_info.stdout"
