@@ -36,6 +36,12 @@
     leapp_metadata_file: leapp-data-21.tar.gz
 
     #
+    # Leapp additional repos to enable
+    #
+    leapp_repos_enable:
+      - codeready-builder-for-rhel-8-x86_64-rpms
+
+    #
     # Leapp upload report
     #
     # XXX FIXME TODO - Not implemented yet
@@ -186,7 +192,14 @@
             - satellite_activation_key_ipu | default(false)
 
         - name: Run leapp preupgrade
-          command: leapp preupgrade --target {{ leapp_os_target }}
+          vars:
+            enable_param: " --enablerepo "
+            enable_repos: "{{ enable_param + leapp_repos_enable | default([], true) | join(enable_param) }}"
+          command: >
+            leapp
+            preupgrade
+            {{ enable_repos }}
+            --target {{ leapp_os_target }}
           register: leapp_command
           failed_when: "'report has been generated' not in leapp_command.stdout"
 
