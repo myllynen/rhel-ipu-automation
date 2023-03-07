@@ -2,6 +2,8 @@
 - name: Run RHEL IPU Preupgrade Check
   hosts: all
   become: true
+  become_method: sudo
+  become_flags: "su - root /bin/bash -c"
   gather_facts: true
   vars:
     #
