@@ -150,9 +150,15 @@
     - name: Gather package facts
       package_facts:
 
-    # XXX FIXME TODO - add restoring versionlock in "always:" below if needed
-    - name: Clear yum version lock
-      command: yum versionlock clear
+    - name: Fail if version locked packages
+      command: >
+        yum
+        -C
+        --disableplugin=product-id,search-disabled-repos,subscription-manager
+        versionlock list
+      register: versionlock_list
+      failed_when: versionlock_list.rc != 0 or versionlock_list.stdout | regex_search('[0-9]:')
+      changed_when: false
       when: "'yum-plugin-versionlock' in ansible_facts.packages"
 
     - name: Extract Leapp metadata archive
