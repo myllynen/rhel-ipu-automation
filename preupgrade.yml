@@ -3,7 +3,7 @@
   hosts: all
   become: true
   become_method: sudo
-  become_flags: "su - root /bin/bash -c"
+  become_flags: 'su - root /bin/bash -c'
   gather_facts: true
   vars:
     #
@@ -127,6 +127,7 @@
       register: enabled_repos
       changed_when: false
 
+    # This is considered safe to be left enabled after preupgrade check
     - name: Enable RHEL 7 Server Extras repository
       command: subscription-manager repos --enable rhel-7-server-extras-rpms
       when: "'rhel-7-server-extras-rpms' not in enabled_repos.stdout"
