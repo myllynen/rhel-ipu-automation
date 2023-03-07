@@ -84,6 +84,10 @@
 
       # Other packages
       - 13f0791ae5f19f50e7d0d606fb6501f91b1efb2c
+      #
+      - e931e4c299de7d276238e5d0b363c010e8587977
+      #
+      - 1b9132cb2362ae7830e48eee7811be9527747de8
 
     #
     # Known removed kernel drivers
