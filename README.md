@@ -1,6 +1,6 @@
 # RHEL In-Place Upgrade Automation
 
-[![License: GPLv3](https://img.shields.io/badge/license-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 Ansible playbooks for RHEL in-place upgrade (IPU) automation.
 
@@ -74,4 +74,4 @@ See also
 
 ## License
 
-GPLv3+
+MIT
