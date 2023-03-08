@@ -118,6 +118,7 @@
     #
     kernel_drivers_known_unmaintained:
       - mptbase
+      - mptsas
       - mptscsih
       - mptspi
 
