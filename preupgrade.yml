@@ -137,9 +137,19 @@
       - mptspi
 
     #
-    # Known 3rd party packages
+    # Known non-RHEL packages
     #
     other_packages_known:
+      # Satellite related
+      - gofer
+      - katello-agent
+      - katello-host-tools
+      - katello-host-tools-fact-plugin
+      - python-gofer
+      - python-gofer-proton
+      - python-qpid-proton
+      - qpid-proton-c
+      # 3rd party
       - BESAgent
       - CentrifyDA
       - CentrifyDC
