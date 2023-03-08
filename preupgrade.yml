@@ -82,6 +82,7 @@
       - c75fe5e06c70d9e764703fa2611f917c75946226
       # Incompatible grep
       - 94665a499e2eeee35eca3e7093a7abe183384b16
+
       # Python versions
       - 0c98585b1d8d252eb540bf61560094f3495351f5
 
@@ -363,17 +364,34 @@
         msg: "Unrecognized package must be investigated: {{ item }}"
       loop: "{{ other_packages_new | default([]) }}"
 
+    - name: Check unrecognized excluded repositories found
+      vars:
+        key_id: 1b9132cb2362ae7830e48eee7811be9527747de8
+        other_repos_excluded: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('- ', '') }}"
+      set_fact:
+        other_repos_excluded_new: "{{ other_repos_excluded_new | default([]) + [item] }}"
+      loop: "{{ other_repos_excluded | sort | unique }}"
+      when:
+        - other_repos_excluded is defined
+        - item not in other_repos_known
+        - "'codeready-builder' not in item"
+
+    - name: Fail if unrecognized excluded repositories found
+      fail:
+        msg: "Unrecognized package must be investigated: {{ item }}"
+      loop: "{{ other_repos_excluded_new | default([]) }}"
+
     - name: Check unrecognized repositories found
       vars:
         key_id: 8e89e20c645cea600b240156071d81c64daab7ad
-        other_repos: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('- ', '') }}"
+        other_repos_unknown: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('- ', '') }}"
       set_fact:
         other_repos_new: "{{ other_repos_new | default([]) + [item] }}"
-      loop: "{{ other_repos | sort | unique }}"
+      loop: "{{ other_repos_unknown | sort | unique }}"
       when:
-        - other_repos is defined
+        - other_repos_unknown is defined
         - item not in other_repos_known
-        - "'codeready-builder' not in item"
+        - item not in other_packages_known
 
     - name: Fail if unrecognized repositories found
       fail:
