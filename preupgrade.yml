@@ -36,7 +36,7 @@
     leapp_metadata_file: leapp-data-21.tar.gz
 
     #
-    # Leapp additional repos to enable
+    # Leapp additional repositories to enable
     #
     leapp_repos_enable:
       - codeready-builder-for-rhel-8-x86_64-rpms
@@ -99,12 +99,25 @@
 
       # Other packages
       - 13f0791ae5f19f50e7d0d606fb6501f91b1efb2c
-      # Other repositories - enabled
+
+      # Other repositories - enabled for upgrade
+      # This is seen if using leapp_repos_enable
       - e931e4c299de7d276238e5d0b363c010e8587977
+      # Other repositories - enabled
+      - e931e4c299de7d276238e5d0b363c010e85871b9
       # Other repositories - excluded
       - 1b9132cb2362ae7830e48eee7811be9527747de8
       # Other repositories - unknown
       - 8e89e20c645cea600b240156071d81c64daab7ad
+
+      #
+      # IDs that will need to be handled later,
+      # listed here temporarily to reduce noise
+      #
+      # NFS mounts
+      - 9881b25faceeeaa7a6478bcdac29afd7f6baaaed
+      # Parsing fstab
+      - 7036bcd7ef0141d4fd7e415101e70a1a71a65d1e
 
     #
     # Known removed kernel drivers
