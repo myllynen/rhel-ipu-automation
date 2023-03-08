@@ -110,6 +110,7 @@
     # Known removed kernel drivers
     #
     kernel_drivers_known_removed:
+      - e1000
       - floppy
       - pata_acpi
 
