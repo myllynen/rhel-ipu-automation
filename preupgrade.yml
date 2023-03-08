@@ -53,12 +53,16 @@
     leapp_keys_known:
       # GRUB update
       - baa75fad370c42fd037481909201cde9495dacf4
+      # GRUB leapp fix
+      - 1a185a73302d519a5a82b1d1d86de3c995382305
       # Kernel drivers - removed
       - f08a07da902958defa4f5c2699fae9ec2eb67c5b
       # Kernel drivers - unmaintained
       - 0ff2413fd3cb0358736bf9be597f4dbdf58f2c4d
       # SELinux mode
       - 39d7183dafba798aa4bbb1e70b0ef2bbe5b1772f
+      # SELinux disabled
+      - 4f25fea9b15b9d1d07d52cc1de02073f295dac3d
       # SELinux relabeling
       - 8fb81863f8413bd617c2a55b69b8e10ff03d7c72
 
@@ -70,6 +74,10 @@
       # subscription-manager release
       - 747a4ca25303eda17d1891bb85eeb226be14f252
 
+      # Incompatible brltty
+      - 6bdee7a18a7b2ef8926cda49eba5bab74726b412
+      # Incompatible dosfstools
+      - c75fe5e06c70d9e764703fa2611f917c75946226
       # Incompatible grep
       - 94665a499e2eeee35eca3e7093a7abe183384b16
       # Python versions
