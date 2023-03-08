@@ -308,12 +308,6 @@
       loop: "{{ leapp_report.entries | map(attribute='key') | sort | unique }}"
       when: item not in leapp_keys_known
 
-    - name: Display unrecognized risks in report
-      throttle: 1
-      debug:
-        msg: "Unrecognized risk must be investigated: {{ item }}"
-      loop: "{{ risks_new | default([]) }}"
-
     - name: Check unrecognized removed kernel drivers
       vars:
         key_id: f08a07da902958defa4f5c2699fae9ec2eb67c5b
@@ -324,12 +318,6 @@
       when:
         - found_drivers_removed is defined
         - item not in kernel_drivers_known_removed
-
-    - name: Display unrecognized removed kernel drivers
-      throttle: 1
-      debug:
-        msg: "Unrecognized removed kernel driver must be investigated: {{ item }}"
-      loop: "{{ kernel_drivers_removed_new | default([]) }}"
 
     - name: Check unrecognized unmaintained kernel drivers
       vars:
@@ -342,12 +330,6 @@
         - found_drivers_unmaintained is defined
         - item not in kernel_drivers_known_unmaintained
 
-    - name: Display unrecognized unmaintained kernel drivers
-      throttle: 1
-      debug:
-        msg: "Unrecognized unmaintained kernel driver must be investigated: {{ item }}"
-      loop: "{{ kernel_drivers_unmaintained_new | default([]) }}"
-
     - name: Check unrecognized packages
       vars:
         key_id: 13f0791ae5f19f50e7d0d606fb6501f91b1efb2c
@@ -358,12 +340,6 @@
       when:
         - other_packages is defined
         - item not in other_packages_known
-
-    - name: Display unrecognized packages
-      throttle: 1
-      debug:
-        msg: "Unrecognized package must be investigated: {{ item }}"
-      loop: "{{ other_packages_new | default([]) }}"
 
     - name: Check unrecognized excluded repositories
       vars:
@@ -377,11 +353,6 @@
         - item not in other_repos_known
         - "'codeready-builder' not in item"
 
-    - name: Display unrecognized excluded repositories
-      debug:
-        msg: "Unrecognized excluded repository must be investigated: {{ item }}"
-      loop: "{{ other_repos_excluded_new | default([]) }}"
-
     - name: Check unrecognized repositories
       vars:
         key_id: 8e89e20c645cea600b240156071d81c64daab7ad
@@ -394,12 +365,44 @@
         - item not in other_repos_known
         - item not in other_packages_known
 
+    - name: Display unrecognized risks in report
+      throttle: 1
+      debug:
+        msg: "Unrecognized risk must be investigated: {{ item }}"
+      loop: "{{ risks_new | default([]) }}"
+
+    - name: Display unrecognized removed kernel drivers
+      throttle: 1
+      debug:
+        msg: "Unrecognized removed kernel driver must be investigated: {{ item }}"
+      loop: "{{ kernel_drivers_removed_new | default([]) }}"
+
+    - name: Display unrecognized unmaintained kernel drivers
+      throttle: 1
+      debug:
+        msg: "Unrecognized unmaintained kernel driver must be investigated: {{ item }}"
+      loop: "{{ kernel_drivers_unmaintained_new | default([]) }}"
+
+    - name: Display unrecognized packages
+      throttle: 1
+      debug:
+        msg: "Unrecognized package must be investigated: {{ item }}"
+      loop: "{{ other_packages_new | default([]) }}"
+
+    - name: Display unrecognized excluded repositories
+      throttle: 1
+      debug:
+        msg: "Unrecognized excluded repository must be investigated: {{ item }}"
+      loop: "{{ other_repos_excluded_new | default([]) }}"
+
     - name: Display unrecognized repositories
+      throttle: 1
       debug:
         msg: "Unrecognized repository must be investigated: {{ item }}"
       loop: "{{ other_repos_new | default([]) }}"
 
     - name: Fail if unrecognized risks found
+      throttle: 1
       fail:
         msg: "Unrecognized risks must be investigated, see the above messages."
       when: >
