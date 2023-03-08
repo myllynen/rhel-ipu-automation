@@ -60,11 +60,6 @@
       - f08a07da902958defa4f5c2699fae9ec2eb67c5b
       # Kernel drivers - unmaintained
       - 0ff2413fd3cb0358736bf9be597f4dbdf58f2c4d
-      # kernel-devel multiple packages
-      # This prevents running the transaction test
-      # but removing older packages is not allowed
-      # in all target environments during precheck
-      #- 8ceea81afbbb1a329b7d82ca7212b21509e5b256
 
       # SELinux mode
       - 39d7183dafba798aa4bbb1e70b0ef2bbe5b1772f
@@ -114,6 +109,11 @@
       # IDs that will need to be handled later,
       # listed here temporarily to reduce noise
       #
+      # kernel-devel multiple packages
+      # This prevents running the transaction test
+      # but removing older packages is not allowed
+      # in all target environments during precheck
+      - 8ceea81afbbb1a329b7d82ca7212b21509e5b256
       # NFS mounts
       - 9881b25faceeeaa7a6478bcdac29afd7f6baaaed
       # Parsing fstab
