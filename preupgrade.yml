@@ -142,8 +142,8 @@
     #
     # Known additional repositories
     #
-    other_repositories_known: []
-    #  -
+    other_repos_known:
+      - rhel-7-server-satellite-client-6-rpms
 
   tasks:
     - name: Fail if running unsupported RHEL version
