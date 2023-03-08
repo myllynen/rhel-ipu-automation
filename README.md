@@ -31,7 +31,8 @@ restored after the check when, again, a corresponding AK is provided.
 
 For further details please see the related documentation listed below.
 
-To run RHEL in-place preupgrade test and automatically check results:
+To run RHEL in-place preupgrade test and automatically check results
+without doing permanen modifications on the target systems:
 
 ```
 # Edit inventory and parameters to suite local environment
