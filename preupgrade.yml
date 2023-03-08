@@ -101,6 +101,8 @@
       - e931e4c299de7d276238e5d0b363c010e8587977
       # Other repositories - excluded
       - 1b9132cb2362ae7830e48eee7811be9527747de8
+      # Other repositories - unknown
+      - 8e89e20c645cea600b240156071d81c64daab7ad
 
     #
     # Known removed kernel drivers
@@ -132,6 +134,12 @@
       - omi
       - scx
       - TaniumClient
+
+    #
+    # Known additional repositories
+    #
+    other_repositories_known: []
+    #  -
 
   tasks:
     - name: Fail if running unsupported RHEL version
@@ -303,6 +311,18 @@
       when:
         - other_packages is defined
         - item not in other_packages_known
+
+    - name: Fail if unrecognized repositories found
+      vars:
+        key_id: 8e89e20c645cea600b240156071d81c64daab7ad
+        other_repos: "{{ (leapp_report.entries | selectattr('key', '==', key_id) | map(attribute='summary') | join('\n')).split('\n') | select('search', '- ') | list | replace('- ', '') }}"
+      fail:
+        msg: "Unrecognized package must be investigated: {{ item }}"
+      loop: "{{ other_repos | sort | unique }}"
+      when:
+        - other_repos is defined
+        - item not in other_repos_known
+        - "'codeready-builder' not in item"
 
     - name: Display conclusion message
       debug:
