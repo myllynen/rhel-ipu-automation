@@ -191,7 +191,7 @@
       command: subscription-manager repos --enable rhel-7-server-extras-rpms
       when: "'rhel-7-server-extras-rpms' not in enabled_repos.stdout"
 
-    - name: Install latest Leapp package
+    - name: Install Leapp package
       vars:
         leapp_package_state: "{{ 'latest' if leapp_update_check | bool else 'present' }}"
       yum:
