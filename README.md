@@ -29,10 +29,16 @@ the target systems to use such a CV automatically if a corresponding
 activation key (AK) is provided. Also, the initial, real system CV is
 restored after the check when, again, a corresponding AK is provided.
 
+The `preupgrade.yml` playbook will install the Leapp RPMs and leave them
+installed on target systems after the check as it is expected that Leapp
+will be used later to perform the actual in-place upgrade. Leapp RPMs
+and their dependencies consume some 20 MB of disk space so this should
+not be an issue.
+
 For further details please see the related documentation listed below.
 
 To run RHEL in-place preupgrade test and automatically check results
-without doing permanent modifications on the target systems:
+without doing permanent modifications on target systems:
 
 ```
 # Edit inventory and parameters to suite local environment
