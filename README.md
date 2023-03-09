@@ -32,12 +32,12 @@ restored after the check when, again, a corresponding AK is provided.
 For further details please see the related documentation listed below.
 
 To run RHEL in-place preupgrade test and automatically check results
-without doing permanen modifications on the target systems:
+without doing permanent modifications on the target systems:
 
 ```
 # Edit inventory and parameters to suite local environment
 vi inventory preupgrade.yml
-# Run Leapp preupgrade check for configured systems
+# Run Leapp preupgrade test and check results
 ansible-playbook -i inventory preupgrade.yml
 ```
 
