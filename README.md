@@ -62,6 +62,10 @@ ansible-playbook -i inventory preupgrade.yml
 * [https://access.redhat.com/articles/4977891](https://access.redhat.com/articles/4977891)
 * [https://access.redhat.com/articles/5777571](https://access.redhat.com/articles/5777571)
 
+## Related Issues and RFEs
+
+* [https://bugzilla.redhat.com/show_bug.cgi?id=1794460](https://bugzilla.redhat.com/show_bug.cgi?id=1794460)
+
 ## See Also
 
 See also
