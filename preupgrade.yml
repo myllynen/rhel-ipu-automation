@@ -4,6 +4,7 @@
   become: true
   become_method: sudo
   become_flags: 'su - root /bin/bash -c'
+  any_errors_fatal: true
   gather_facts: true
   vars:
     #
@@ -404,7 +405,7 @@
     - name: Fail if unrecognized risks found
       throttle: 1
       fail:
-        msg: "Unrecognized risks must be investigated, see the above messages."
+        msg: "Unrecognized risks must be investigated, see the messages above."
       when: >
         risks_new | default(false) or
         kernel_drivers_removed_new | default(false) or
