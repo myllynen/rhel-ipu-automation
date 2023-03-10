@@ -81,10 +81,10 @@ ansible-playbook -i inventory preupgrade.yml
 * [Ansible](https://www.redhat.com/en/blog/updates-using-ansible-rhel-86-and-90)
 * [C/C++ developer blog post](https://developers.redhat.com/blog/2020/10/08/migrating-c-and-c-applications-from-red-hat-enterprise-linux-version-7-to-version-8)
 * [C/C++ RHEL documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/developing_c_and_cpp_applications_in_rhel_8/index)
+* [C, C++, Go, Rust on RHEL 9](https://www.redhat.com/en/blog/what-c-go-or-rust-developer-should-know-about-rhel-9)
 * [Docker](https://access.redhat.com/solutions/3696691)
 * [Java](https://access.redhat.com/articles/1299013)
 * [Python](https://access.redhat.com/solutions/4455511)
-* [C, C++, Go, Rust on RHEL 9](https://www.redhat.com/en/blog/what-c-go-or-rust-developer-should-know-about-rhel-9)
 * [Support Scope Details](https://access.redhat.com/support/offerings/production/scope_moredetail)
 
 ## See Also
