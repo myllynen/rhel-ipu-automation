@@ -90,7 +90,7 @@ ansible-playbook -i inventory preupgrade.yml
 ## See Also
 
 See also
-[https://lab.redhat.com/tracks/in-place-upgrades](https://lab.redhat.com/tracks/in-place-upgrades).
+[https://www.redhat.com/en/interactive-labs/perform-in-place-upgrade-with-leapp](https://www.redhat.com/en/interactive-labs/perform-in-place-upgrade-with-leapp).
 
 See also
 [https://access.redhat.com/documentation/en-us/red_hat_satellite/6.12/html/managing_hosts/upgrading_hosts_to_next_major_rhel_release_managing-hosts](https://access.redhat.com/documentation/en-us/red_hat_satellite/6.12/html/managing_hosts/upgrading_hosts_to_next_major_rhel_release_managing-hosts).
