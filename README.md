@@ -77,6 +77,7 @@ ansible-playbook -i inventory preupgrade.yml
 * [Application Streams Life Cycle](https://access.redhat.com/support/policy/updates/rhel-app-streams-life-cycle)
 * [RHEL Container Compatibility Matrix](https://access.redhat.com/support/policy/rhel-container-compatibility)
 * [RHEL hardware support](https://access.redhat.com/solutions/60940)
+* [RHEL unmaintained hardware](https://access.redhat.com/solutions/6663421)
 * [Kernel ABI (kABI)](https://access.redhat.com/solutions/444773)
 * [32-bit applications](https://access.redhat.com/solutions/509373)
 * [Ansible](https://www.redhat.com/en/blog/updates-using-ansible-rhel-86-and-90)
