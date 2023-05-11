@@ -190,6 +190,7 @@
     # This is considered safe to be left enabled after preupgrade check
     - name: Enable RHEL 7 Server Extras repository
       command: subscription-manager repos --enable rhel-7-server-extras-rpms
+      changed_when: true
       when: "'rhel-7-server-extras-rpms' not in enabled_repos.stdout"
 
     - name: Install Leapp package
@@ -206,6 +207,7 @@
 
     # Should be safe to omit but for now this alerts about use of versionlock
     - name: Fail if version locked packages
+      # noqa: command-instead-of-module
       command: >
         yum
         -C
@@ -248,6 +250,7 @@
             --force
             --organization={{ satellite_organization }}
             --activation-key={{ satellite_activation_key_ipu }}
+          changed_when: true
           when:
             - satellite_organization | default(false)
             - satellite_activation_key_ipu | default(false)
@@ -263,6 +266,7 @@
             --target {{ leapp_os_target }}
           register: leapp_command
           failed_when: "'report has been generated' not in leapp_command.stdout"
+          changed_when: true
 
       always:
         - name: Subscribe to RHEL real content view
@@ -271,6 +275,7 @@
             --force
             --organization={{ satellite_organization }}
             --activation-key={{ satellite_activation_key_real }}
+          changed_when: true
           when:
             - satellite_organization | default(false)
             - satellite_activation_key_real | default(false)
@@ -301,6 +306,7 @@
     # XXX FIXME TODO - Not implemented yet
     - name: Upload Leapp report
       command: echo TODO
+      changed_when: false
       when: leapp_report_upload | bool
 
     - name: Check unrecognized risks in report
