@@ -89,6 +89,11 @@ ansible-playbook -i inventory preupgrade.yml
 * [Python](https://access.redhat.com/solutions/4455511)
 * [Support Scope Details](https://access.redhat.com/support/offerings/production/scope_moredetail)
 
+## Blog Posts and Articles
+
+* [https://www.redhat.com/en/blog/how-automate-upgrades-rhel-7-end-maintenance](https://www.redhat.com/en/blog/how-automate-upgrades-rhel-7-end-maintenance)
+* [https://www.redhat.com/en/blog/plan-maintenance-your-red-hat-enterprise-linux-systems-using-newly-published-upgrade-schema](https://www.redhat.com/en/blog/plan-maintenance-your-red-hat-enterprise-linux-systems-using-newly-published-upgrade-schema)
+
 ## See Also
 
 See also
