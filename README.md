@@ -71,6 +71,10 @@ ansible-playbook -i inventory preupgrade.yml
 * [https://bugzilla.redhat.com/show_bug.cgi?id=1794460](https://bugzilla.redhat.com/show_bug.cgi?id=1794460)
 * [https://github.com/ansible/ansible/issues/78007](https://github.com/ansible/ansible/issues/78007)
 
+## Related Repositories
+
+* [https://github.com/oamg/ansible-leapp](https://github.com/oamg/ansible-leapp)
+
 ## Application and Compatibility Documentation
 
 * [Application Compatibility Guide](https://access.redhat.com/articles/rhel8-abi-compatibility)
@@ -101,7 +105,7 @@ See also
 [https://www.redhat.com/en/interactive-labs/perform-in-place-upgrade-with-leapp](https://www.redhat.com/en/interactive-labs/perform-in-place-upgrade-with-leapp).
 
 See also
-[https://access.redhat.com/documentation/en-us/red_hat_satellite/6.12/html/managing_hosts/upgrading_hosts_to_next_major_rhel_release_managing-hosts](https://access.redhat.com/documentation/en-us/red_hat_satellite/6.12/html/managing_hosts/upgrading_hosts_to_next_major_rhel_release_managing-hosts).
+[https://access.redhat.com/documentation/en-us/red_hat_satellite/6.13/html/managing_hosts/upgrading_hosts_to_next_major_rhel_release_managing-hosts](https://access.redhat.com/documentation/en-us/red_hat_satellite/6.12/html/managing_hosts/upgrading_hosts_to_next_major_rhel_release_managing-hosts).
 
 See also
 [https://www.redhat.com/en/blog/take-unknowns-out-rhel-upgrades-red-hat-insights](https://www.redhat.com/en/blog/take-unknowns-out-rhel-upgrades-red-hat-insights).
